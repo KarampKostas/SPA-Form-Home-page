@@ -3,12 +3,17 @@ import { useHistory } from 'react-router-dom';
 
 const Home = ({user,setUser}) => {
     const [data,setData] = useState(null);
+    const [isLoading,setIsLoading] = useState(true);
     const history = useHistory();
 
     useEffect(() => {
         fetch('http://localhost:8000/users')
         .then(res => res.json())
-        .then(data => setData(data))
+        .then(data => 
+            {
+                setIsLoading(false);
+                setData(data);
+            })
     },[])
 
    
@@ -20,6 +25,7 @@ const Home = ({user,setUser}) => {
     return (
         user ? <div>
             <h1>Welcome {user}</h1>
+            {isLoading && <h1>Loading...</h1>}
             <button className="btn" onClick={logoutHandler}>Logout</button>
             <div className="user-container">
                 
